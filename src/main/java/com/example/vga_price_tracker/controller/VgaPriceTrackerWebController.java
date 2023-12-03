@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 @Controller
 public class VgaPriceTrackerWebController {
-    private VgaPriceTrackerService vgaPriceTrackerService;
+    private final VgaPriceTrackerService vgaPriceTrackerService;
 
     @GetMapping("")
     public String getMainPage() {
