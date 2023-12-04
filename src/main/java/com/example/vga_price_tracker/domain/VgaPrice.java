@@ -10,7 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "VGA_NM")
+@Table(name = "VGA_PRICE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class VgaPrice {
@@ -24,6 +24,9 @@ public class VgaPrice {
     @ManyToOne
     @JoinColumn(name = "VGA", nullable = false)
     private VgaName vgaName;
+
+    @Column(name = "VGA_PRICE", nullable = false)
+    private int vgaPrice;
 
     // 편지 생성 날짜
     @CreatedDate
