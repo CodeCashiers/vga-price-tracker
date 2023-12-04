@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "VGA_NM")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Vga {
+public class VgaName {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class Vga {
     @Column(name = "VGA_NAME", nullable = false)
     private String vgaName;
 
-    public Vga(String vgaName) {
+    public VgaName(String vgaName) {
         this.vgaName = vgaName;
     }
 }

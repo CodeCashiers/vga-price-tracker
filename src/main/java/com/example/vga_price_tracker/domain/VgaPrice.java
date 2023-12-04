@@ -23,15 +23,15 @@ public class VgaPrice {
     // 내용
     @ManyToOne
     @JoinColumn(name = "VGA", nullable = false)
-    private Vga vga;
+    private VgaName vgaName;
 
     // 편지 생성 날짜
     @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDate createdAt;
 
-    public VgaPrice(Vga vga) {
-        this.vga = vga;
+    public VgaPrice(VgaName vgaName) {
+        this.vgaName = vgaName;
         this.createdAt = LocalDate.now();
     }
 }
