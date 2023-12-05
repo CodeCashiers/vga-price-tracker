@@ -41,7 +41,6 @@ public class VgaPrice {     // 그래픽카드 가격
         this.createdAt = LocalDate.now();
     }
 
-
     // DTO로 변환
     public VgaPriceDTO convertToDTO() {
         return VgaPriceDTO.builder()

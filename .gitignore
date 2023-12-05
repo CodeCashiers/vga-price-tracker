@@ -5,6 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 application.yml
+application_backup.yml
 application.properties
 
 ### STS ###
