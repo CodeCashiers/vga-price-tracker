@@ -1,6 +1,7 @@
 package com.example.vga_price_tracker.domain;
 
 
+import com.example.vga_price_tracker.dto.VgaPriceDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class VgaPrice {
 
     // 내용
     @ManyToOne
-    @JoinColumn(name = "VGA", nullable = false)
+    @JoinColumn(name = "VGA_NM", nullable = false)
     private VgaName vgaName;
 
     @Column(name = "VGA_PRICE", nullable = false)
@@ -30,11 +31,20 @@ public class VgaPrice {
 
     // 편지 생성 날짜
     @CreatedDate
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "CREATED_AT", nullable = false)
     private LocalDate createdAt;
 
     public VgaPrice(VgaName vgaName) {
         this.vgaName = vgaName;
         this.createdAt = LocalDate.now();
+    }
+
+    public VgaPriceDTO convertToDTO() {
+        return VgaPriceDTO.builder()
+                .id(this.id)
+                .vgaName(this.vgaName.getVgaName())
+                .vgaPrice(this.vgaPrice)
+                .date(this.createdAt.toString())
+                .build();
     }
 }
