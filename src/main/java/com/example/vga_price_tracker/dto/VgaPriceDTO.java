@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class VgaPriceDTO {
+public class VgaPriceDTO {   // 그래픽카드 가격 DTO
     private final long id;
     private final String vgaName;
     private final int vgaPrice;

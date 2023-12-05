@@ -1,6 +1,7 @@
 package com.example.vga_price_tracker.controller;
 
 import com.example.vga_price_tracker.dto.VgaNameDTO;
+import com.example.vga_price_tracker.dto.VgaPriceDTO;
 import com.example.vga_price_tracker.service.VgaPriceTrackerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,22 @@ import java.util.List;
 public class VgaPriceTrackerWebController {
     private final VgaPriceTrackerService vgaPriceTrackerService;
 
+    // 차트 페이지
     @GetMapping("")
-    public String getMain(Model model) {
+    public String getMain(@RequestParam(required = false, defaultValue = "1") long vgaId, Model model) {
+        // 그래픽카드 이름 목록을 가져옴.
         List<VgaNameDTO> vgaNames = vgaPriceTrackerService.getVgaNames();
+        // 선택된 그래픽카드의 일주일 사이의 가격 데이터를 가져옴.
+        List<VgaPriceDTO> vgaPricesForWeek = vgaPriceTrackerService.getVgaPricesForWeek(vgaId);
+        // 선택된 그래픽카드의 한달 사이의 가격 데이터를 가져옴.
+        List<VgaPriceDTO> vgaPricesForMonth = vgaPriceTrackerService.getVgaPricesForMonth(vgaId);
 
+        // 모델에 데이터를 추가.
         model.addAttribute("vgaNames", vgaNames);
+        model.addAttribute("vgaPricesForWeek", vgaPricesForWeek);
+        model.addAttribute("vgaPricesForMonth", vgaPricesForMonth);
+
+        // "main.html" 템플릿을 반환.
         return "main.html";
     }
 }

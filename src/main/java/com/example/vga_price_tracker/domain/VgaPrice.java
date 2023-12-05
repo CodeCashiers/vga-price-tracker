@@ -14,31 +14,35 @@ import java.time.LocalDate;
 @Table(name = "VGA_PRICE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class VgaPrice {
+public class VgaPrice {     // 그래픽카드 가격
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "VGA_PRICE_ID", updatable = false)
     private Long id;
 
-    // 내용
+    // 그래픽카드 종류 외래키
     @ManyToOne
     @JoinColumn(name = "VGA_NM", nullable = false)
     private VgaName vgaName;
 
+    // 그래픽카드 가격
     @Column(name = "VGA_PRICE", nullable = false)
     private int vgaPrice;
 
-    // 편지 생성 날짜
+    // 그래픽카드 시세 일자
     @CreatedDate
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDate createdAt;
 
-    public VgaPrice(VgaName vgaName) {
+    public VgaPrice(VgaName vgaName, int vgaPrice) {
         this.vgaName = vgaName;
+        this.vgaPrice = vgaPrice;
         this.createdAt = LocalDate.now();
     }
 
+
+    // DTO로 변환
     public VgaPriceDTO convertToDTO() {
         return VgaPriceDTO.builder()
                 .id(this.id)

@@ -18,6 +18,10 @@ public class VgaPriceTrackerService {
     private final VgaNameRepository vgaNameRepository;
     private final VgaPriceRepository vgaPriceRepository;
 
+    /**
+     *
+     * @return 그래픽카드 종류 리스트
+     */
     public List<VgaNameDTO> getVgaNames() {
         List<VgaName> vgaNames = vgaNameRepository.findAll();
 
@@ -26,27 +30,32 @@ public class VgaPriceTrackerService {
                 .toList();
     }
 
-    // 한 달 단위
-    public List<VgaPriceDTO> getVgaPricesForMonth(long vgaId) {
-        return getVgaPricesForPeriod(vgaId, LocalDate.now().minusMonths(1));
-    }
-
-    // 하루 단위
+    /**
+     *
+     * @return 일주일 사이의 그래픽카드 가격 리스트
+     */
     public List<VgaPriceDTO> getVgaPricesForWeek(long vgaId) {
         return getVgaPricesForPeriod(vgaId, LocalDate.now().minusWeeks(1));
     }
 
-    // 1년 단위
-    public List<VgaPriceDTO> getVgaPricesForYear(long vgaId) {
-        return getVgaPricesForPeriod(vgaId, LocalDate.now().minusYears(1));
+    /**
+     *
+     * @return 한달 사이의 그래픽카드 가격 리스트
+     */
+    // 1개월 단위
+    public List<VgaPriceDTO> getVgaPricesForMonth(long vgaId) {
+        return getVgaPricesForPeriod(vgaId, LocalDate.now().minusMonths(1));
     }
 
-    // 공통된 로직을 처리하는 private 메소드
+    /**
+     *
+     * @return 오늘과 특정 기간 사이의 그래픽카드 가격 리스트
+     */
     private List<VgaPriceDTO> getVgaPricesForPeriod(long vgaId, LocalDate startDate) {
         VgaName vgaName = vgaNameRepository.findById(vgaId)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 그래픽카드 이름"));
 
-        LocalDate endDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now();    // 오늘
         List<VgaPrice> vgaPrices = vgaPriceRepository.findByVgaNameAndCreatedAtBetween(vgaName, startDate, endDate);
 
         return vgaPrices.stream()
@@ -54,6 +63,7 @@ public class VgaPriceTrackerService {
                 .toList();
     }
 
+    // 그래픽카드 가격 데이터를 DTO로 변환
     private VgaPriceDTO convertVgaPriceToDTO(VgaPrice vgaPrice) {
         return VgaPriceDTO.builder()
                 .vgaName(vgaPrice.getVgaName().getVgaName())
@@ -62,6 +72,7 @@ public class VgaPriceTrackerService {
                 .build();
     }
 
+    // 그래픽카드 종류 데이터를 DTO로 변환
     private VgaNameDTO convertVgaNameToDTO(VgaName vgaName) {
         return new VgaNameDTO(vgaName.getId(), vgaName.getVgaName());
     }
