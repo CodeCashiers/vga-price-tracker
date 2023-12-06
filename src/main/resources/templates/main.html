@@ -18,7 +18,6 @@
     <div class="mb-3">
         <label for="vgaSelect" class="form-label">그래픽카드 선택:</label>
         <select class="form-select" id="vgaSelect" name="vgaId" onchange="updateChartWithVga()">
-            <option value="all">전체</option>
             <option th:each="vga : ${vgaNames}" th:value="${vga.id}" th:text="${vga.vgaName}">그래픽카드 이름</option>
         </select>
     </div>
