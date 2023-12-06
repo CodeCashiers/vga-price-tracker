@@ -9,6 +9,8 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import csv
+import matplotlib.pyplot as plt
+import numpy as np
 
 # 크롬 옵션 설정
 chrome_options = Options()
@@ -51,7 +53,17 @@ for page in range(start_page, end_page + 1):
 
 # 가격순으로 데이터 정렬
 sorted_data = sorted(data, key=lambda x: x["price"])
+# 데이터에서 가격만 추출
+prices = [item['price'] for item in sorted_data]
 
+# 평균, 중앙값, 표준편차, 분산 계산
+average_price = np.mean(prices)
+median_price = np.median(prices)
+std_dev = np.std(prices)
+variance = np.var(prices)
+
+# 결과 출력
+average_price, median_price, std_dev, variance
 # CSV 파일에 데이터 쓰기
 with open('gpu_prices.csv', 'w', newline='', encoding='utf-8') as file:
     writer = csv.DictWriter(file, fieldnames=["title", "price"])
