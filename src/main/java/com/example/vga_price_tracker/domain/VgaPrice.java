@@ -28,14 +28,14 @@ public class VgaPrice {     // 그래픽카드 가격
 
     // 그래픽카드 가격
     @Column(name = "VGA_PRICE", nullable = false)
-    private int vgaPrice;
+    private float vgaPrice;
 
     // 그래픽카드 시세 일자
     @CreatedDate
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDate createdAt;
 
-    public VgaPrice(VgaName vgaName, int vgaPrice) {
+    public VgaPrice(VgaName vgaName, float vgaPrice) {
         this.vgaName = vgaName;
         this.vgaPrice = vgaPrice;
         this.createdAt = LocalDate.now();
