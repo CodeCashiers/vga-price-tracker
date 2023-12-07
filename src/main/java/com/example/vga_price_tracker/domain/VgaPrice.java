@@ -44,7 +44,6 @@ public class VgaPrice {     // 그래픽카드 가격
     // DTO로 변환
     public VgaPriceDTO convertToDTO() {
         return VgaPriceDTO.builder()
-                .id(this.id)
                 .vgaName(this.vgaName.getVgaName())
                 .vgaPrice(this.vgaPrice)
                 .date(this.createdAt.toString())
