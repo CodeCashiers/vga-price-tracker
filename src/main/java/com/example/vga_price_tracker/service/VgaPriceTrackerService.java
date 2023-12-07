@@ -61,11 +61,11 @@ public class VgaPriceTrackerService {
      * @return 오늘과 특정 기간 사이의 그래픽카드 가격 리스트
      */
     private List<VgaPriceDTO> getVgaPricesForPeriod(long vgaId, LocalDate startDate) {
-        Vga vgaName = vgaNameRepository.findById(vgaId)
+        Vga vga = vgaNameRepository.findById(vgaId)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 그래픽카드 이름"));
 
         LocalDate endDate = LocalDate.now();    // 오늘
-        List<VgaPrice> vgaPrices = vgaPriceRepository.findByVgaAndCreatedAtBetween(vgaName, startDate, endDate);
+        List<VgaPrice> vgaPrices = vgaPriceRepository.findByVgaAndCreatedAtBetween(vga, startDate, endDate);
 
         return vgaPrices.stream()
                 .map(this::convertVgaPriceToDTO)
