@@ -10,56 +10,74 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f8f8f8;
         }
-
+    
+        #chart {
+            width: 80%;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin: 20px auto;
+            /* 중앙 정렬 */
+        }
+    
         .chart-container {
             display: flex;
             align-items: center;
+            
             justify-content: space-between;
-            margin-bottom: 5px;
-            height: 30px;
+            margin: 10px 0;
         }
-        /* 홀수 번째 요소에 대한 배경색 설정 */
+    
         .chart-container:nth-child(odd) {
-            background-color: #fff; /* 흰색 배경 */
+            background-color: #fff;
         }
-
-/* 짝수 번째 요소에 대한 배경색 설정 */
+    
         .chart-container:nth-child(even) {
-            background-color: #ddd; /* 회색 배경 */
+            background-color: #eee;
         }
-
+    
         .chart-container .name {
-            flex: 1 1 20%;
-            /* 이름 부분이 컨테이너의 20%를 차지하도록 설정 */
+            flex: 1;
+            padding: 0 10px;
         }
-
+    
         .chart-container .bar {
-            flex: 1 1 60%;
-            /* 바 부분이 컨테이너의 60%를 차지하도록 설정 */
+            flex: 2;
             height: 20px;
             position: relative;
+           
+            /* 기본 바 배경 */
+            border-radius: 5px;
         }
-
+    
         .chart-container .bar span {
             display: block;
             height: 100%;
-            border-radius: 10px;
+            border-radius: 5px;
+            line-height: 20px;
+            /* 세로 중앙 정렬을 위함 */
+            color: white;
+            /* 바 안의 텍스트 색상 */
+            text-align: center;
+            /* 텍스트 중앙 정렬 */
         }
-
+    
         .chart-container .price {
-            flex: 1 1 20%;
-            /* 가격 부분이 컨테이너의 20%를 차지하도록 설정 */
+            flex: 0.5;
             text-align: right;
+            padding-right: 10px;
         }
-
-        /* 화면 크기가 600px 이하일 때 적용할 스타일 */
+    
         @media (max-width: 600px) {
             .chart-container {
                 flex-direction: column;
                 align-items: flex-start;
             }
-
+    
             .chart-container .name,
             .chart-container .bar,
             .chart-container .price {
@@ -68,37 +86,67 @@
         }
     </style>
 </head>
-
 <body>
+    
     <div id="chart"></div>
+        <div>
+            <input type="radio" name="category" value="NVIDIA" id="nvidia-radio" checked>
+            <label for="nvidia-radio">NVIDIA</label>
+            <input type="radio" name="category" value="AMD" id="amd-radio">
+            <label for="amd-radio">AMD</label>
+        </div>
 
     <script>
         // 샘플 데이터
-        const data = [
-            { name: "GeForce RTX 4090", ops: 28998, price: 1699.99, color: "#8dd3c7" },
-            { name: "RTX 6000 Ada Generation", ops: 23296, price: null, color: "#fffbb3" },
-            { name: "GeForce RTX 4080", ops: 22063, price: 1149.99, color: "#bebada" },
-            // ... 추가 데이터
-        ];
+            const data = [
+                { name: "GeForce RTX 4090", ops: 28998, price: 1699.99, color: "#8dd3c7", category: "NVIDIA" },
+                { name: "GeForce RTX 4080", ops: 22063, price: 1149.99, color: "#bebada", category: "NVIDIA" },
+                { name: "Radeon RX 6900 XT", ops: 21000, price: 999.99, color: "#ff0000", category: "AMD" },
+                { name: "Radeon RX 6800 XT", ops: 19800, price: 799.99, color: "#ff6600", category: "AMD" },
+                // ... 추가 데이터
+            ];
 
-        // 최대 ops 계산
-        const maxOps = Math.max(...data.map(d => d.ops));
+            // 최대 ops 계산
+            const maxOps = Math.max(...data.map(d => d.ops));
 
-        // 차트 생성
-        const chart = d3.select("#chart");
-        data.forEach(d => {
-            const container = chart.append("div").attr("class", "chart-container");
+            // 라디오 버튼 이벤트 처리
+            const radioButtons = document.querySelectorAll('input[name="category"]');
+            radioButtons.forEach(radioButton => {
+                radioButton.addEventListener('change', () => {
+                    const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+                    updateChart(selectedCategory);
+                });
+            });
 
-            container.append("div").attr("class", "name").text(d.name);
+            // 초기 차트 생성
+            updateChart("NVIDIA");
 
-            const bar = container.append("div").attr("class", "bar");
-            bar.append("span")
-                .style("width", `${(d.ops / maxOps) * 100}%`)
-                .style("background-color", d.color)
-                .text(d.ops.toLocaleString());
+            // 차트 업데이트 함수
+            function updateChart(category) {
+                const chart = d3.select("#chart");
+                chart.html(""); // 기존 차트 내용 삭제
 
-            container.append("div").attr("class", "price").text(d.price ? `$${d.price.toFixed(2)}` : 'NA');
-        });
+                data.forEach(d => {
+                    if (category === "NVIDIA" && d.category !== "NVIDIA") {
+                        return; // NVIDIA 카테고리 선택 시 NVIDIA 부품만 표시
+                    }
+                    if (category === "AMD" && d.category !== "AMD") {
+                        return; // AMD 카테고리 선택 시 AMD 부품만 표시
+                    }
+
+                    const container = chart.append("div").attr("class", "chart-container");
+
+                    container.append("div").attr("class", "name").text(d.name);
+
+                    const bar = container.append("div").attr("class", "bar");
+                    bar.append("span")
+                        .style("width", `${(d.ops / maxOps) * 100}%`)
+                        .style("background-color", d.color)
+                        .text(d.ops.toLocaleString());
+
+                    container.append("div").attr("class", "price").text(d.price ? `$${d.price.toFixed(2)}` : 'NA');
+                });
+            }
     </script>
 </body>
 
