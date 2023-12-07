@@ -4,7 +4,7 @@ import com.example.vga_price_tracker.domain.Vga;
 import com.example.vga_price_tracker.domain.VgaPrice;
 import com.example.vga_price_tracker.dto.VgaNameDTO;
 import com.example.vga_price_tracker.dto.VgaPriceDTO;
-import com.example.vga_price_tracker.repository.VgaNameRepository;
+import com.example.vga_price_tracker.repository.VgaRepository;
 import com.example.vga_price_tracker.repository.VgaPriceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class VgaPriceTrackerService {
-    private final VgaNameRepository vgaNameRepository;
+    private final VgaRepository vgaNameRepository;
     private final VgaPriceRepository vgaPriceRepository;
 
     /**
