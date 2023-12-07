@@ -13,4 +13,6 @@ public interface VgaPriceRepository extends JpaRepository<VgaPrice, Long> {
      * @return 특정 기간 사이(startDate, endDate)의 그래픽카드 가격 리스트
      */
     List<VgaPrice> findByVgaAndCreatedAtBetween(Vga vga, LocalDate startDate, LocalDate endDate);
+
+    List<VgaPrice> findByCreatedAt(LocalDate today);
 }

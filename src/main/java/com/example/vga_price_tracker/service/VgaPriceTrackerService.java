@@ -4,7 +4,7 @@ import com.example.vga_price_tracker.domain.Vga;
 import com.example.vga_price_tracker.domain.VgaPrice;
 import com.example.vga_price_tracker.dto.VgaNameDTO;
 import com.example.vga_price_tracker.dto.VgaPriceDTO;
-import com.example.vga_price_tracker.repository.VgaNameRepository;
+import com.example.vga_price_tracker.repository.VgaRepository;
 import com.example.vga_price_tracker.repository.VgaPriceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class VgaPriceTrackerService {
-    private final VgaNameRepository vgaNameRepository;
+    private final VgaRepository vgaNameRepository;
     private final VgaPriceRepository vgaPriceRepository;
 
     /**
@@ -61,11 +61,11 @@ public class VgaPriceTrackerService {
      * @return 오늘과 특정 기간 사이의 그래픽카드 가격 리스트
      */
     private List<VgaPriceDTO> getVgaPricesForPeriod(long vgaId, LocalDate startDate) {
-        Vga vgaName = vgaNameRepository.findById(vgaId)
+        Vga vga = vgaNameRepository.findById(vgaId)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 그래픽카드 이름"));
 
         LocalDate endDate = LocalDate.now();    // 오늘
-        List<VgaPrice> vgaPrices = vgaPriceRepository.findByVgaAndCreatedAtBetween(vgaName, startDate, endDate);
+        List<VgaPrice> vgaPrices = vgaPriceRepository.findByVgaAndCreatedAtBetween(vga, startDate, endDate);
 
         return vgaPrices.stream()
                 .map(this::convertVgaPriceToDTO)
