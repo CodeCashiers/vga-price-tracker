@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Video Card Performance Chart</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chart-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            height: 30px;
+        }
+        /* 홀수 번째 요소에 대한 배경색 설정 */
+        .chart-container:nth-child(odd) {
+            background-color: #fff; /* 흰색 배경 */
+        }
+
+/* 짝수 번째 요소에 대한 배경색 설정 */
+        .chart-container:nth-child(even) {
+            background-color: #ddd; /* 회색 배경 */
+        }
+
+        .chart-container .name {
+            flex: 1 1 20%;
+            /* 이름 부분이 컨테이너의 20%를 차지하도록 설정 */
+        }
+
+        .chart-container .bar {
+            flex: 1 1 60%;
+            /* 바 부분이 컨테이너의 60%를 차지하도록 설정 */
+            height: 20px;
+            position: relative;
+        }
+
+        .chart-container .bar span {
+            display: block;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .chart-container .price {
+            flex: 1 1 20%;
+            /* 가격 부분이 컨테이너의 20%를 차지하도록 설정 */
+            text-align: right;
+        }
+
+        /* 화면 크기가 600px 이하일 때 적용할 스타일 */
+        @media (max-width: 600px) {
+            .chart-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .chart-container .name,
+            .chart-container .bar,
+            .chart-container .price {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chart"></div>
+
+    <script>
+        // 샘플 데이터
+        const data = [
+            { name: "GeForce RTX 4090", ops: 28998, price: 1699.99, color: "#8dd3c7" },
+            { name: "RTX 6000 Ada Generation", ops: 23296, price: null, color: "#fffbb3" },
+            { name: "GeForce RTX 4080", ops: 22063, price: 1149.99, color: "#bebada" },
+            // ... 추가 데이터
+        ];
+
+        // 최대 ops 계산
+        const maxOps = Math.max(...data.map(d => d.ops));
+
+        // 차트 생성
+        const chart = d3.select("#chart");
+        data.forEach(d => {
+            const container = chart.append("div").attr("class", "chart-container");
+
+            container.append("div").attr("class", "name").text(d.name);
+
+            const bar = container.append("div").attr("class", "bar");
+            bar.append("span")
+                .style("width", `${(d.ops / maxOps) * 100}%`)
+                .style("background-color", d.color)
+                .text(d.ops.toLocaleString());
+
+            container.append("div").attr("class", "price").text(d.price ? `$${d.price.toFixed(2)}` : 'NA');
+        });
+    </script>
+</body>
+
+</html>
