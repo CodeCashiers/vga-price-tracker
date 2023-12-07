@@ -9,5 +9,4 @@ public class VgaPriceTrackerApplication {
     public static void main(String[] args) {
         SpringApplication.run(VgaPriceTrackerApplication.class, args);
     }
-
 }

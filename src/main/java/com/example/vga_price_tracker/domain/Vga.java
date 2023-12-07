@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "VGA_NM")
+@Table(name = "VGA")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class VgaName {      // 그래픽카드 종류
+public class Vga {      // 그래픽카드 종류
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,17 @@ public class VgaName {      // 그래픽카드 종류
     @Column(name = "VGA_NAME", nullable = false)
     private String vgaName;
 
-    public VgaName(String vgaName) {
+    // 벤치마킹 점수
+    @Column(name = "VGA_SCORE")
+    private int vgaScore;
+
+    // 벤치마킹 점수
+    @Column(name = "VGA_CATEGORY")
+    private String vgaCategory;
+
+    public Vga(String vgaName, int vgaScore, String vgaCategory) {
         this.vgaName = vgaName;
+        this.vgaScore = vgaScore;
+        this.vgaCategory = vgaCategory;
     }
 }

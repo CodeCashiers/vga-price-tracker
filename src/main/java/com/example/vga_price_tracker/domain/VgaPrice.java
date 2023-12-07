@@ -23,8 +23,8 @@ public class VgaPrice {     // 그래픽카드 가격
 
     // 그래픽카드 종류 외래키
     @ManyToOne
-    @JoinColumn(name = "VGA_NM", nullable = false)
-    private VgaName vgaName;
+    @JoinColumn(name = "VGA", nullable = false)
+    private Vga vga;
 
     // 그래픽카드 가격
     @Column(name = "VGA_PRICE", nullable = false)
@@ -35,8 +35,9 @@ public class VgaPrice {     // 그래픽카드 가격
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDate createdAt;
 
-    public VgaPrice(VgaName vgaName, float vgaPrice) {
-        this.vgaName = vgaName;
+
+    public VgaPrice(Vga vga, float vgaPrice) {
+        this.vga = vga;
         this.vgaPrice = vgaPrice;
         this.createdAt = LocalDate.now();
     }
@@ -44,7 +45,7 @@ public class VgaPrice {     // 그래픽카드 가격
     // DTO로 변환
     public VgaPriceDTO convertToDTO() {
         return VgaPriceDTO.builder()
-                .vgaName(this.vgaName.getVgaName())
+                .vgaName(this.vga.getVgaName())
                 .vgaPrice(this.vgaPrice)
                 .date(this.createdAt.toString())
                 .build();

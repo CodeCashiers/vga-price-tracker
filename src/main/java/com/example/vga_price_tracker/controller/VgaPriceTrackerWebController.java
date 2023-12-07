@@ -26,10 +26,13 @@ public class VgaPriceTrackerWebController {
         // 선택된 그래픽카드의 한달 사이의 가격 데이터를 가져옴.
         List<VgaPriceDTO> vgaPricesForMonth = vgaPriceTrackerService.getVgaPricesForMonth(vgaId);
 
+        List<VgaPriceDTO> vgaPricesForYear = vgaPriceTrackerService.getVgaPricesForYear(vgaId);
+
         // 모델에 데이터를 추가.
         model.addAttribute("vgaNames", vgaNames);
         model.addAttribute("vgaPricesForWeek", vgaPricesForWeek);
         model.addAttribute("vgaPricesForMonth", vgaPricesForMonth);
+        model.addAttribute("vgaPricesForYear", vgaPricesForYear);
 
         // "main.html" 템플릿을 반환.
         return "main.html";

@@ -26,6 +26,7 @@
     <div class="btn-group" role="group" aria-label="Time options">
         <button type="button" class="btn btn-secondary" onclick="updateChartForPeriod('1week')">1주일</button>
         <button type="button" class="btn btn-secondary" onclick="updateChartForPeriod('1month')">1개월</button>
+        <button type="button" class="btn btn-secondary" onclick="updateChartForPeriod('1year')">1년</button>
     </div>
 
     <div class="card">
@@ -37,6 +38,7 @@
 <script th:inline="javascript">
     var vgaPricesForWeek = [[${vgaPricesForWeek}]];
     var vgaPricesForMonth = [[${vgaPricesForMonth}]];
+    var vgaPricesForYear = [[${vgaPricesForYear}]];
 
     console.log(vgaPricesForMonth);
     console.log(vgaPricesForWeek);
@@ -85,6 +87,8 @@
             updateChart(vgaPricesForWeek);
         } else if (period === '1month') {
             updateChart(vgaPricesForMonth);
+        } else if (period === '1year') {
+            updateChart(vgaPricesForYear);
         }
     }
 
