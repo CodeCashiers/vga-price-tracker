@@ -5,14 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class VgaPriceDTO {   // 그래픽카드 가격 DTO
-    private final long id;
     private final String vgaName;
     private final int vgaPrice;
     private final String date;
 
     @Builder
-    public VgaPriceDTO(long id, String vgaName, int vgaPrice, String date) {
-        this.id = id;
+    public VgaPriceDTO(String vgaName, int vgaPrice, String date) {
         this.vgaName = vgaName;
         this.vgaPrice = vgaPrice;
         this.date = date;

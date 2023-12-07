@@ -41,6 +41,15 @@
     console.log(vgaPricesForMonth);
     console.log(vgaPricesForWeek);
 
+    // 페이지 로드 시 선택된 그래픽카드를 설정하는 함수
+    function setSelectedVgaFromUrl() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var selectedVgaId = urlParams.get('vgaId');
+        if (selectedVgaId) {
+            document.getElementById('vgaSelect').value = selectedVgaId;
+        }
+    }
+
     // 특정 그래픽카드를 선택하면 페이지 이동
     function updateChartWithVga() {
         var selectedVga = document.getElementById('vgaSelect').value;
@@ -95,8 +104,11 @@
         options: {}
     });
 
-    // 페이지 로드 시 초기 차트 데이터 설정
-    updateChartForPeriod('1month');
+    // 페이지 로드 시 실행
+    document.addEventListener('DOMContentLoaded', function() {
+        setSelectedVgaFromUrl();
+        updateChartForPeriod('1month');
+    });
 </script>
 </body>
 </html>
