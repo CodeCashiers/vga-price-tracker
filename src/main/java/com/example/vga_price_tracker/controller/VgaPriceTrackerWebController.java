@@ -1,5 +1,6 @@
 package com.example.vga_price_tracker.controller;
 
+import com.example.vga_price_tracker.dto.VgaInfoDTO;
 import com.example.vga_price_tracker.dto.VgaNameDTO;
 import com.example.vga_price_tracker.dto.VgaPriceDTO;
 import com.example.vga_price_tracker.service.VgaPriceTrackerService;
@@ -37,4 +38,23 @@ public class VgaPriceTrackerWebController {
         // "main.html" 템플릿을 반환.
         return "main.html";
     }
+    @GetMapping("")
+    public String getAllCurrentVGA(@RequestParam(required = false) String type) {
+        if (type != null && !isValidType(type)) {
+            // 유효하지 않은 type 값 처리
+            // 예를 들어, 에러 메시지를 반환하거나 기본 값을 사용할 수 있습니다.
+        }
+        // 그래픽카드 이름 목록을 가져옴.
+        List<VgaNameDTO> vgaNames = vgaPriceTrackerService.getVgaNames();
+        List<VgaInfoDTO> vgaInfos = vgaPriceTrackerService.getVgaInfos();
+        // 나머지 로직
+        return "vgaList";
+    }
+
+    private boolean isValidType(String type) {
+        // type 값이 유효한지 확인하는 로직
+
+        return "expectedType1".equals(type) || "expectedType2".equals(type); // 예시
+    }
+
 }

@@ -2,11 +2,13 @@ package com.example.vga_price_tracker.service;
 
 import com.example.vga_price_tracker.domain.Vga;
 import com.example.vga_price_tracker.domain.VgaPrice;
+import com.example.vga_price_tracker.dto.VgaInfoDTO;
 import com.example.vga_price_tracker.dto.VgaNameDTO;
 import com.example.vga_price_tracker.dto.VgaPriceDTO;
 import com.example.vga_price_tracker.repository.VgaRepository;
 import com.example.vga_price_tracker.repository.VgaPriceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,6 +32,9 @@ public class VgaPriceTrackerService {
                 .toList();
     }
 
+    public List<VgaInfoDTO> getVgaInfos(){
+
+    }
     /**
      *
      * @return 일주일 사이의 그래픽카드 가격 리스트
