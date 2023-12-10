@@ -95,7 +95,7 @@
                         <span th:style="'width:' + (${data.score} / ${maxScore}) * 100 + '%; background-color: #4CAF50'"
                               th:text="${data.score}"></span>
                 </div>
-                <div class="price" th:text="${data.price != null ? '$' + #numbers.formatDecimal(data.price, 1, 'COMMA', 2, 'POINT') : 'NA'}"></div>
+                <div class="price" th:text="${data.vgaPrice != null ? '$' + #numbers.formatDecimal(data.vgaPrice, 1, 'COMMA', 2, 'POINT') : 'NA'}"></div>
             </div>
         </div>
     </div>
