@@ -18,6 +18,11 @@ public interface VgaPriceRepository extends JpaRepository<VgaPrice, Long> {
 
     List<VgaPrice> findByCreatedAt(LocalDate today);
 
-    @Query("")
+    @Query(value =
+            "SELECT new com.example.vga_price_tracker.dto.VgaPricePerformanceScoreDTO(vp.id, vp.vga.vgaName, vp.vgaPrice, ROUND(vp.vga.vgaScore / vp.vgaPrice, 2))" +
+            "FROM VgaPrice vp " +
+            "WHERE (vp.vga, vp.createdAt) IN (SELECT vp.vga, max(vp.createdAt) FROM VgaPrice vp GROUP BY vp.vga)" +
+            "ORDER BY ROUND(vp.vga.vgaScore / vp.vgaPrice, 2) DESC"
+    )
     List<VgaPricePerformanceScoreDTO> getPricePerformanceRanking();
 }

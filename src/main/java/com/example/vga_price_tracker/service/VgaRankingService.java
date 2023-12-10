@@ -2,7 +2,6 @@ package com.example.vga_price_tracker.service;
 
 import com.example.vga_price_tracker.dto.VgaPricePerformanceScoreDTO;
 import com.example.vga_price_tracker.repository.VgaPriceRepository;
-import com.example.vga_price_tracker.repository.VgaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
