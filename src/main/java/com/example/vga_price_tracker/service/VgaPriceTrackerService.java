@@ -33,7 +33,10 @@ public class VgaPriceTrackerService {
     }
 
     public List<VgaInfoDTO> getVgaInfos(){
-
+        List<Long> ids = getVgaNames().stream()
+                .map(VgaNameDTO::getId)
+                .toList();
+         return vgaNameRepository.findLatestVgaPricesByIds(ids);
     }
     /**
      *
@@ -76,6 +79,7 @@ public class VgaPriceTrackerService {
                 .map(this::convertVgaPriceToDTO)
                 .toList();
     }
+
 
     // 그래픽카드 가격 데이터를 DTO로 변환
     private VgaPriceDTO convertVgaPriceToDTO(VgaPrice vgaPrice) {

@@ -13,7 +13,7 @@ public class VgaInfo {
     @Column(name = "VGA_NAME")
     private String vgaName;
     @Column(name = "VGA_CATEGORY")
-    private String CAT;
+    private int CAT;
 
     @Column(name = "vga_price")
     private float vgaPrice;

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class VgaInfoDTO {
     private final String vgaName;
     private final float vgaPrice;
-    private final int vgaRank;
-    private final int G3Dmark;
+    private final int category; // CAT 필드를 category로 명명
+    private final int value;    // value 필드 추가
 
 }

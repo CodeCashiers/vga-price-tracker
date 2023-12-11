@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -39,17 +40,16 @@ public class VgaPriceTrackerWebController {
         return "main.html";
     }
     @GetMapping("")
-    public String getAllCurrentVGA(@RequestParam(required = false) String type) {
-        if (type != null && !isValidType(type)) {
-            // 유효하지 않은 type 값 처리
-            // 예를 들어, 에러 메시지를 반환하거나 기본 값을 사용할 수 있습니다.
-        }
+    public String getAllCurrentVGA(@RequestParam(required = false) Model model) {
         // 그래픽카드 이름 목록을 가져옴.
-        List<VgaNameDTO> vgaNames = vgaPriceTrackerService.getVgaNames();
+
+
         List<VgaInfoDTO> vgaInfos = vgaPriceTrackerService.getVgaInfos();
         // 나머지 로직
+        model.addAttribute("videoCardData",vgaInfos);
         return "vgaList";
     }
+
 
     private boolean isValidType(String type) {
         // type 값이 유효한지 확인하는 로직
