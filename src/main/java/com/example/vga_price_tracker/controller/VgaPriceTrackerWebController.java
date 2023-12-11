@@ -5,6 +5,7 @@ import com.example.vga_price_tracker.dto.VgaNameDTO;
 import com.example.vga_price_tracker.dto.VgaPriceDTO;
 import com.example.vga_price_tracker.dto.VgaPricePerformanceScoreDTO;
 import com.example.vga_price_tracker.service.VgaPriceTrackerService;
+import com.example.vga_price_tracker.service.VgaRankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Controller
 public class VgaPriceTrackerWebController {
     private final VgaPriceTrackerService vgaPriceTrackerService;
+    private final VgaRankingService vgaRankingService;
 
     // 차트 페이지
     @GetMapping("")
