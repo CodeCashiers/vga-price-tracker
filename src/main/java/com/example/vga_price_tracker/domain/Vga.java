@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Vga {      // 그래픽카드 종류
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "VGA_ID", updatable = false)
