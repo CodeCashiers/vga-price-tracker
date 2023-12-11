@@ -15,7 +15,7 @@ public interface VgaRepository extends JpaRepository<Vga, Long> {
      * @return 그래픽카드 종류
      */
     Optional<Vga> findById(long id);
-    @Query("SELECT VgaInfoDTO(v.name, vp.price, v.score, v.category)" +
+    @Query("SELECT VgaInfoDTO(v.vgaName, vp.vgaPrice, v.vgaScore, v.vgaCategory)" +
             "FROM VgaPrice vp JOIN vp.vga v " +
             "WHERE v.id IN :ids AND vp.createdAt = " +
             "(SELECT MAX(vp2.createdAt) FROM VgaPrice vp2 WHERE vp2.vga.id = v.id) " +
