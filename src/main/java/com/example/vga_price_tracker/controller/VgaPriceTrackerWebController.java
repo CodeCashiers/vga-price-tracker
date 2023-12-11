@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,13 +36,24 @@ public class VgaPriceTrackerWebController {
         List<VgaPriceDTO> vgaPricesForYear = vgaPriceTrackerService.getVgaPricesForYear(vgaId);
         List<VgaInfoDTO> vgaInfos = vgaPriceTrackerService.getVgaInfos();
         // 나머지 로직
+        // (data.value / data.vgaPrice) 기준으로 정렬
+        vgaInfos.sort(Comparator.comparingDouble(data -> data.getValue() / data.getVgaPrice()));
+        Collections.reverse(vgaInfos);
+
+// 가장 높은 (data.value / data.vgaPrice) 값을 찾음
+        double maxRatio = vgaInfos.stream()
+                .mapToDouble(data -> data.getValue() / data.getVgaPrice())
+                .max()
+                .orElse(1); // 0으로 나누는 것을 방지하기 위해 기본값 설정
 
         // 모델에 데이터를 추가.
         model.addAttribute("vgaNames", vgaNames);
         model.addAttribute("vgaPricesForWeek", vgaPricesForWeek);
         model.addAttribute("vgaPricesForMonth", vgaPricesForMonth);
         model.addAttribute("vgaPricesForYear", vgaPricesForYear);
-        model.addAttribute("videoCardData",vgaInfos);
+        // 모델에 정렬된 데이터와 최대 비율을 추가
+        model.addAttribute("videoCardData", vgaInfos);
+        model.addAttribute("maxRatio", maxRatio);
         // "main.html" 템플릿을 반환.
         return "main.html";
     }

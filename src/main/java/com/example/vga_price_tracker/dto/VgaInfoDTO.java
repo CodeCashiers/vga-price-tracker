@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public class VgaInfoDTO {
     private final String vgaName;
-    private final float vgaPrice;
-    private final int category; // CAT 필드를 category로 명명
-    private final int value;    // value 필드 추가
+    private final Float vgaPrice;
+    private final Integer category; // CAT 필드를 category로 명명
+    private final Integer value;    // value 필드 추가
 
-    public VgaInfoDTO(String vgaName, float vgaPrice, int category, int value) {
+    public VgaInfoDTO(String vgaName, Float vgaPrice, Integer category, Integer value) {
         this.vgaName = vgaName;
         this.vgaPrice = vgaPrice;
         this.category = category;

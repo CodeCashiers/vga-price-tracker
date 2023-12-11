@@ -10,85 +10,103 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-        }
-    
-        #chart {
-            width: 80%;
-            max-width: 1000px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            margin: 20px auto;
-            /* 중앙 정렬 */
-        }
-    
-        .chart-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
-    
-        .chart-container:nth-child(odd) {
-            background-color: #fff;
-        }
-    
-        .chart-container:nth-child(even) {
-            background-color: #eee;
-        }
-    
-        .chart-container .name {
-            flex: 1;
-            padding: 0 10px;
-        }
-    
         .chart-container .bar {
-            flex: 2;
-            height: 20px;
-            position: relative;
-            /* 기본 바 배경 */
-            border-radius: 5px;
-        }
-    
-        .chart-container .bar span {
-            display: block;
-            height: 100%;
-            border-radius: 5px;
-            line-height: 20px;
-            /* 세로 중앙 정렬을 위함 */
-            color: white;
-            /* 바 안의 텍스트 색상 */
-            text-align: center;
-            /* 텍스트 중앙 정렬 */
-        }
-    
-        .chart-container .price {
-            flex: 0.5;
-            text-align: right;
-            padding-right: 10px;
-        }
-    
-        @media (max-width: 600px) {
-            .chart-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-    
-            .chart-container .name,
-            .chart-container .bar,
-            .chart-container .price {
-                width: 100%;
-            }
-        }
+        flex: 2;
+        height: 20px;
+        position: relative;
+        background-color: #ddd; /* 기본 바 배경 */
+        border-radius: 10px; /* 둥근 모서리 */
+        overflow: hidden; /* 내부 요소가 바깥으로 넘칠 때 숨김 */
+    }
+
+    .chart-container .bar span {
+        display: block;
+        height: 100%;
+        border-radius: 10px; /* 둥근 모서리 */
+        line-height: 20px;
+        color: white;
+        text-align: center;
+        background-color: #4CAF50; /* 기본 색상 */
+        box-shadow: inset 0 -3px 3px rgba(0,0,0,0.2); /* 입체감을 주는 그림자 */
+        transition: width 0.5s ease-in-out; /* 부드러운 너비 변화 효과 */
+    }
+
+    /* 카테고리별 색상 클래스 */
+    .category-nvidia .bar span {
+        background-color: #76b900; /* NVIDIA 색상 */
+    }
+
+    .category-amd .bar span {
+        background-color: #ED1C24; /* AMD 색상 */
+    }
+
     </style>
 </head>
 <body>
+
+
+ <div id="chart">
+    <div th:each="data : ${videoCardData}">
+        
+        <div class="chart-container" th:classappend="${data.category == 0 ? 'category-nvidia' : 'category-amd'}">
+            <div class="name" th:text="${data.vgaName}"></div>
+            <!-- 수정된 'value' 필드를 사용한 바 차트 너비 설정 -->
+            <div class="bar">
+                <span th:style="|width: ${((data.value / data.vgaPrice) / maxRatio)*100}%;|">
+                    <span th:text="${((data.value / data.vgaPrice) / maxRatio)*100}"></span>
+                </span>
+            </div>
+            <div class="price"
+                th:text="${data.vgaPrice != null ? '$' + T(java.lang.String).format('%1$,.2f', data.vgaPrice) : 'NA'}">
+            </div>
+            
+            <div class="category" th:text="${data.category == 0 ? 'NVIDIA' : 'AMD'}"></div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <input type="radio" name="category" value="NVIDIA" id="nvidia-radio" checked>
+    <label for="nvidia-radio">NVIDIA</label>
+    <input type="radio" name="category" value="AMD" id="amd-radio">
+    <label for="amd-radio">AMD</label>
+</div>
+
+<script>
+    // 초기 차트 생성
+    updateChart();
+
+    // 라디오 버튼 이벤트 처리
+    const radioButtons = document.querySelectorAll('input[name="category"]');
+    radioButtons.forEach(radioButton => {
+        radioButton.addEventListener('change', updateChart);
+    });
+
+    // 차트 업데이트 함수
+  function updateChart() {
+        const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+        document.querySelectorAll(".chart-container").forEach(container => {
+            const category = container.querySelector(".category").textContent;
+
+            // 카테고리별 클래스 추가
+            container.classList.remove('category-nvidia', 'category-amd');
+            if (category === 'NVIDIA') {
+                container.classList.add('category-nvidia');
+            } else if (category === 'AMD') {
+                container.classList.add('category-amd');
+            }
+
+            if (category === selectedCategory) {
+                container.style.display = "flex"; // flex로 변경하여 바 정렬 유지
+            } else {
+                container.style.display = "none";
+            }
+        });
+    }
+
+
+</script>
+   
 <div class="container mt-5">
     <h1 class="text-center mb-4">그래픽카드 시세 차트</h1>
     <p>이 페이지에서는 최근 몇 달간 그래픽카드의 시세 변동을 보여주는 차트를 제공합니다. 각 월별로 그래픽카드의 평균 가격을 확인할 수 있으며, 시장 동향에 따른 변화를 분석할 수 있습니다.</p>
@@ -192,56 +210,6 @@
         setSelectedVgaFromUrl();
         updateChartForPeriod('1month');
     });
-</script>
-<div id="chart">
-    <div th:each="data : ${videoCardData}">
-        <div class="chart-container">
-            <div class="name" th:text="${data.vgaName}"></div>
-            <!-- 'value' 필드를 사용한 바 차트 -->
-            <div class="bar">
-                <span th:style="'width: ' + (${data.value} / 100) * 100 + '%';"></span>
-            </div>
-            <div class="price" th:text="${data.vgaPrice ? '$' + ${data.vgaPrice.toFixed(2)} : 'NA'}"></div>
-            <!-- 카테고리 표시 -->
-            <div class="category" th:text="${data.CAT == 0 ? 'NVIDIA' : 'AMD'}"></div>
-        </div>
-    </div>
-</div>
-<div>
-    <input type="radio" name="category" value="NVIDIA" id="nvidia-radio" checked>
-    <label for="nvidia-radio">NVIDIA</label>
-    <input type="radio" name="category" value="AMD" id="amd-radio">
-    <label for="amd-radio">AMD</label>
-</div>
-
-<script>
-    // 초기 차트 생성
-    updateChart();
-
-    // 라디오 버튼 이벤트 처리
-    const radioButtons = document.querySelectorAll('input[name="category"]');
-    radioButtons.forEach(radioButton => {
-        radioButton.addEventListener('change', updateChart);
-    });
-
-    // 차트 업데이트 함수
-    function updateChart() {
-        const selectedCategory = document.querySelector('input[name="category"]:checked').value;
-        const chart = d3.select("#chart");
-        chart.html(""); // 기존 차트 내용 삭제
-
-        // DOM에서 데이터 읽기
-        document.querySelectorAll(".chart-container").forEach(container => {
-            const name = container.querySelector(".name").textContent;
-            const value = parseFloat(container.querySelector(".bar span").style.width);
-            const price = container.querySelector(".price").textContent;
-            const category = container.querySelector(".category").textContent;
-
-            if (category === selectedCategory) {
-                // 여기에 차트에 데이터를 추가하는 로직
-            }
-        });
-    }
 </script>
 </body>
 </html>
