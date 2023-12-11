@@ -24,11 +24,11 @@ public class Vga {      // 그래픽카드 종류
     @Column(name = "VGA_SCORE")
     private int vgaScore;
 
-    // 벤치마킹 점수
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "VGA_CATEGORY")
-    private String vgaCategory;
+    private VgaCategory vgaCategory;
 
-    public Vga(String vgaName, int vgaScore, String vgaCategory) {
+    public Vga(String vgaName, int vgaScore, VgaCategory vgaCategory) {
         this.vgaName = vgaName;
         this.vgaScore = vgaScore;
         this.vgaCategory = vgaCategory;

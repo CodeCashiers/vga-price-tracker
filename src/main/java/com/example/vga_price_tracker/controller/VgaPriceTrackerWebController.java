@@ -1,6 +1,5 @@
 package com.example.vga_price_tracker.controller;
 
-import com.example.vga_price_tracker.dto.VgaInfoDTO;
 import com.example.vga_price_tracker.dto.VgaNameDTO;
 import com.example.vga_price_tracker.dto.VgaPriceDTO;
 import com.example.vga_price_tracker.service.VgaPriceTrackerService;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -57,4 +55,21 @@ public class VgaPriceTrackerWebController {
         return "expectedType1".equals(type) || "expectedType2".equals(type); // 예시
     }
 
+
+    @GetMapping("/ranking")
+    public String getRanking(Model model) {
+        List<VgaPricePerformanceScoreDTO> rankingDTO = vgaRankingService.getPricePerformanceRanking();
+
+        model.addAttribute("ranking", rankingDTO);
+
+        // maxScore 계산
+        float maxScore = rankingDTO.stream()
+                .map(VgaPricePerformanceScoreDTO::getScore)
+                .max(Float::compare)
+                .orElse(1.0f); // 기본값 설정
+
+        model.addAttribute("maxScore", maxScore);
+
+        return "ranking.html";
+    }
 }

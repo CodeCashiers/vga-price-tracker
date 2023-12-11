@@ -88,15 +88,14 @@
 <body>
 
     <div id="chart">
-        <div th:each="data : ${videoCardData}">
+        <div th:each="data : ${ranking}">
             <div class="chart-container">
-                <div class="name" th:text="${data.name}"></div>
+                <div class="name" th:text="${data.vgaName}"></div>
                 <div class="bar">
-                    <span
-                        th:style="'width: ' + (${data.ops} / ${maxOps}) * 100 + '%'; background-color: ' + ${data.color}"
-                        th:text="${data.ops}"></span>
+                        <span th:style="'width:' + (${data.score} / ${maxScore}) * 100 + '%; background-color: #4CAF50'"
+                              th:text="${data.score}"></span>
                 </div>
-                <div class="price" th:text="${data.price ? '$' + ${data.price.toFixed(2)} : 'NA'}"></div>
+                <div class="price" th:text="${data.vgaPrice != null ? '$' + #numbers.formatDecimal(data.vgaPrice, 1, 'COMMA', 2, 'POINT') : 'NA'}"></div>
             </div>
         </div>
     </div>
