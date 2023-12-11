@@ -29,25 +29,17 @@ public class VgaPriceTrackerWebController {
         List<VgaPriceDTO> vgaPricesForMonth = vgaPriceTrackerService.getVgaPricesForMonth(vgaId);
 
         List<VgaPriceDTO> vgaPricesForYear = vgaPriceTrackerService.getVgaPricesForYear(vgaId);
+        List<VgaInfoDTO> vgaInfos = vgaPriceTrackerService.getVgaInfos();
+        // 나머지 로직
 
         // 모델에 데이터를 추가.
         model.addAttribute("vgaNames", vgaNames);
         model.addAttribute("vgaPricesForWeek", vgaPricesForWeek);
         model.addAttribute("vgaPricesForMonth", vgaPricesForMonth);
         model.addAttribute("vgaPricesForYear", vgaPricesForYear);
-
+        model.addAttribute("videoCardData",vgaInfos);
         // "main.html" 템플릿을 반환.
         return "main.html";
-    }
-    @GetMapping("")
-    public String getAllCurrentVGA(@RequestParam(required = false) Model model) {
-        // 그래픽카드 이름 목록을 가져옴.
-
-
-        List<VgaInfoDTO> vgaInfos = vgaPriceTrackerService.getVgaInfos();
-        // 나머지 로직
-        model.addAttribute("videoCardData",vgaInfos);
-        return "vgaList";
     }
 
 
