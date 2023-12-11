@@ -40,7 +40,7 @@ public class VgaPriceTrackerWebController {
         return "main.html";
     }
     @GetMapping("")
-    public String getAllCurrentVGA(@RequestParam(required = false) Model model) {
+    public String getAllCurrentVGA(Model model) {
         // 그래픽카드 이름 목록을 가져옴.
 
 
