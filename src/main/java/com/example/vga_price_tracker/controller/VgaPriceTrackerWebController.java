@@ -42,7 +42,6 @@ public class VgaPriceTrackerWebController {
         return "main.html";
     }
 
-
     private boolean isValidType(String type) {
         // type 값이 유효한지 확인하는 로직
 
