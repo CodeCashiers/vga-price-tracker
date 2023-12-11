@@ -88,14 +88,16 @@
 <body>
 
     <div id="chart">
-        <div th:each="data : ${ranking}">
+        <div th:each="data : ${videoCardData}">
             <div class="chart-container">
                 <div class="name" th:text="${data.vgaName}"></div>
+                <!-- 'value' 필드를 사용한 바 차트 -->
                 <div class="bar">
-                        <span th:style="'width:' + (${data.score} / ${maxScore}) * 100 + '%; background-color: #4CAF50'"
-                              th:text="${data.score}"></span>
+                    <span th:style="'width: ' + (${data.value} / 100) * 100 + '%';"></span>
                 </div>
-                <div class="price" th:text="${data.vgaPrice != null ? '$' + #numbers.formatDecimal(data.vgaPrice, 1, 'COMMA', 2, 'POINT') : 'NA'}"></div>
+                <div class="price" th:text="${data.vgaPrice ? '$' + ${data.vgaPrice.toFixed(2)} : 'NA'}"></div>
+                <!-- 카테고리 표시 -->
+                <div class="category" th:text="${data.CAT == 0 ? 'NVIDIA' : 'AMD'}"></div>
             </div>
         </div>
     </div>
@@ -107,16 +109,14 @@
     </div>
 
     <script>
+        // 초기 차트 생성
+        updateChart();
+
         // 라디오 버튼 이벤트 처리
         const radioButtons = document.querySelectorAll('input[name="category"]');
         radioButtons.forEach(radioButton => {
-            radioButton.addEventListener('change', () => {
-                updateChart();
-            });
+            radioButton.addEventListener('change', updateChart);
         });
-
-        // 초기 차트 생성
-        updateChart();
 
         // 차트 업데이트 함수
         function updateChart() {
@@ -124,21 +124,16 @@
             const chart = d3.select("#chart");
             chart.html(""); // 기존 차트 내용 삭제
 
-            const chartData = [[${ videoCardData }]];
-            const maxOps = Math.max(...chartData.map(d => d.ops));
+            // DOM에서 데이터 읽기
+            document.querySelectorAll(".chart-container").forEach(container => {
+                const name = container.querySelector(".name").textContent;
+                const value = parseFloat(container.querySelector(".bar span").style.width);
+                const price = container.querySelector(".price").textContent;
+                const category = container.querySelector(".category").textContent;
 
-            chartData.forEach(data => {
-                const container = chart.append("div").attr("class", "chart-container");
-
-                container.append("div").attr("class", "name").text(data.name);
-
-                const bar = container.append("div").attr("class", "bar");
-                bar.append("span")
-                    .style("width", `${(data.ops / maxOps) * 100}%`)
-                    .style("background-color", data.color)
-                    .text(data.ops);
-
-                container.append("div").attr("class", "price").text(data.price ? `$${data.price.toFixed(2)}` : 'NA');
+                if (category === selectedCategory) {
+                    // 여기에 차트에 데이터를 추가하는 로직
+                }
             });
         }
     </script>
