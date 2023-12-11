@@ -22,8 +22,5 @@ public interface VgaRepository extends JpaRepository<Vga, Long> {
             "ORDER BY vp.createdAt DESC")
     List<VgaInfoDTO> findLatestVgaPricesByIds(@Param("ids") List<Long> ids);
 
-    List<VgaInfoDTO> findVgaDetailsByIds(@Param("ids") List<Long> ids);
-
-    List<VgaInfoDTO> findPricesByIds(@Param("ids") List<Long> ids);
 
 }
