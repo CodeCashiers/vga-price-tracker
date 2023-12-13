@@ -58,6 +58,7 @@
     <div class="mb-3">
         <label for="vgaSelect" class="form-label">그래픽카드 선택:</label>
         <select class="form-select" id="vgaSelect" name="vgaId" onchange="updateChartWithVga()">
+            <option value="-1">전체</option>
             <option th:each="vga : ${vgaNames}" th:value="${vga.id}" th:text="${vga.vgaName}">그래픽카드 이름</option>
         </select>
     </div>
@@ -124,9 +125,6 @@
     var vgaPricesForWeek = [[${vgaPricesForWeek}]];
     var vgaPricesForMonth = [[${vgaPricesForMonth}]];
     var vgaPricesForYear = [[${vgaPricesForYear}]];
-
-    console.log(vgaPricesForMonth);
-    console.log(vgaPricesForWeek);
 
     // 페이지 로드 시 선택된 그래픽카드를 설정하는 함수
     function setSelectedVgaFromUrl() {

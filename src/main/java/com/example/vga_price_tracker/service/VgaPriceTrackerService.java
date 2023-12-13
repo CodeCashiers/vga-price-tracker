@@ -2,6 +2,7 @@ package com.example.vga_price_tracker.service;
 
 import com.example.vga_price_tracker.domain.Vga;
 import com.example.vga_price_tracker.domain.VgaPrice;
+import com.example.vga_price_tracker.dto.DailyVgaPriceAverageDTO;
 import com.example.vga_price_tracker.dto.VgaInfoDTO;
 import com.example.vga_price_tracker.dto.VgaNameDTO;
 import com.example.vga_price_tracker.dto.VgaPriceDTO;
@@ -38,6 +39,7 @@ public class VgaPriceTrackerService {
                 .toList();
          return vgaNameRepository.findLatestVgaPricesByIds(ids);
     }
+
     /**
      *
      * @return 일주일 사이의 그래픽카드 가격 리스트
@@ -78,6 +80,38 @@ public class VgaPriceTrackerService {
         return vgaPrices.stream()
                 .map(this::convertVgaPriceToDTO)
                 .toList();
+    }
+
+    /**
+     *
+     * @return 일주일 사이의 그래픽카드 평균 가격 리스트
+     */
+    public List<VgaPriceDTO> getVgaPriceAverageForWeek() {
+        return getDailyVgaPriceAveragesForPeriod(LocalDate.now().minusWeeks(1));
+    }
+
+    /**
+     *
+     * @return 한달 사이의 그래픽카드 평균 가격 리스트
+     */
+    // 1개월 단위
+    public List<VgaPriceDTO> getVgaPriceAverageForMonth() {
+        return getDailyVgaPriceAveragesForPeriod(LocalDate.now().minusMonths(1));
+    }
+
+    /**
+     *
+     * @return 한달 사이의 그래픽카드 평균 가격 리스트
+     */
+    // 1년 단위
+    public List<VgaPriceDTO> getVgaPriceAverageForYear() {
+        return getDailyVgaPriceAveragesForPeriod(LocalDate.now().minusYears(1));
+    }
+
+    private List<VgaPriceDTO> getDailyVgaPriceAveragesForPeriod(LocalDate startDate) {
+        LocalDate endDate = LocalDate.now();    // 오늘
+
+        return vgaPriceRepository.getDailyVgaPriceAverage(startDate, endDate);
     }
 
 

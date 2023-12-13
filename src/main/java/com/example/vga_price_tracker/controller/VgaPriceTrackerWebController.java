@@ -1,9 +1,6 @@
 package com.example.vga_price_tracker.controller;
 
-import com.example.vga_price_tracker.dto.VgaInfoDTO;
-import com.example.vga_price_tracker.dto.VgaNameDTO;
-import com.example.vga_price_tracker.dto.VgaPriceDTO;
-import com.example.vga_price_tracker.dto.VgaPricePerformanceScoreDTO;
+import com.example.vga_price_tracker.dto.*;
 import com.example.vga_price_tracker.service.VgaPriceTrackerService;
 import com.example.vga_price_tracker.service.VgaRankingService;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +19,29 @@ import java.util.stream.Collectors;
 public class VgaPriceTrackerWebController {
     private final VgaPriceTrackerService vgaPriceTrackerService;
     private final VgaRankingService vgaRankingService;
+    private static final int ENTIRE_VGA_ID = -1;
 
     // 차트 페이지
     @GetMapping("")
-    public String getMain(@RequestParam(required = false, defaultValue = "1") long vgaId, Model model) {
+    public String getMain(@RequestParam(required = false, defaultValue = "-1") long vgaId, Model model) {
         // 그래픽카드 이름 목록을 가져옴.
         List<VgaNameDTO> vgaNames = vgaPriceTrackerService.getVgaNames();
-        // 선택된 그래픽카드의 일주일 사이의 가격 데이터를 가져옴.
-        List<VgaPriceDTO> vgaPricesForWeek = vgaPriceTrackerService.getVgaPricesForWeek(vgaId);
-        // 선택된 그래픽카드의 한달 사이의 가격 데이터를 가져옴.
-        List<VgaPriceDTO> vgaPricesForMonth = vgaPriceTrackerService.getVgaPricesForMonth(vgaId);
+        List<VgaPriceDTO> vgaPricesForWeek;
+        List<VgaPriceDTO> vgaPricesForMonth;
+        List<VgaPriceDTO> vgaPricesForYear;
 
-        List<VgaPriceDTO> vgaPricesForYear = vgaPriceTrackerService.getVgaPricesForYear(vgaId);
+        if(vgaId == ENTIRE_VGA_ID) {
+            vgaPricesForWeek = vgaPriceTrackerService.getVgaPriceAverageForWeek();
+            vgaPricesForMonth = vgaPriceTrackerService.getVgaPriceAverageForMonth();
+            vgaPricesForYear = vgaPriceTrackerService.getVgaPriceAverageForYear();
+        } else {
+            // 선택된 그래픽카드의 일주일 사이의 가격 데이터를 가져옴.
+            vgaPricesForWeek = vgaPriceTrackerService.getVgaPricesForWeek(vgaId);
+            // 선택된 그래픽카드의 한달 사이의 가격 데이터를 가져옴.
+            vgaPricesForMonth = vgaPriceTrackerService.getVgaPricesForMonth(vgaId);
+            vgaPricesForYear = vgaPriceTrackerService.getVgaPricesForYear(vgaId);
+        }
+
         List<VgaInfoDTO> vgaInfos = vgaPriceTrackerService.getVgaInfos();
         // 나머지 로직
         // (data.value / data.vgaPrice) 기준으로 정렬
@@ -46,14 +54,15 @@ public class VgaPriceTrackerWebController {
                 .max()
                 .orElse(1); // 0으로 나누는 것을 방지하기 위해 기본값 설정
 
+
         // 모델에 데이터를 추가.
         model.addAttribute("vgaNames", vgaNames);
-        model.addAttribute("vgaPricesForWeek", vgaPricesForWeek);
-        model.addAttribute("vgaPricesForMonth", vgaPricesForMonth);
-        model.addAttribute("vgaPricesForYear", vgaPricesForYear);
         // 모델에 정렬된 데이터와 최대 비율을 추가
         model.addAttribute("videoCardData", vgaInfos);
         model.addAttribute("maxRatio", maxRatio);
+        model.addAttribute("vgaPricesForWeek", vgaPricesForWeek);
+        model.addAttribute("vgaPricesForMonth", vgaPricesForMonth);
+        model.addAttribute("vgaPricesForYear", vgaPricesForYear);
         // "main.html" 템플릿을 반환.
         return "main.html";
     }
